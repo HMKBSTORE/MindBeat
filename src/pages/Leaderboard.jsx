@@ -4,6 +4,7 @@ import { collection, getDocs, orderBy, query } from 'firebase/firestore'
 import { db } from '../firebase'
 import { useAuth } from '../context/AuthContext'
 import Loader from '../components/Loader'
+import AdScript from '../components/AdScript'
 
 // Single global leaderboard — MindBeat isn't just for one school anymore,
 // so class/school splitting is gone. Simple, familiar "Rank" list like most
@@ -46,6 +47,16 @@ export default function Leaderboard() {
           <Row rank={myRank} student={profile} isMe highlight onClick={() => navigate(`/student/${profile.id}`)} />
         </div>
       )}
+
+      <div className="my-6 flex justify-center">
+        <AdScript
+          src="https://www.highrevenueformat.com/c0f1d8d38891544f85367a7b10460988/invoke.js"
+          width={300}
+          height={250}
+          label="Sponsored leaderboard box"
+          className="ad-frame ad-frame-square"
+        />
+      </div>
     </div>
   )
 }

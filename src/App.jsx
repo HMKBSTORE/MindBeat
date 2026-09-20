@@ -3,6 +3,7 @@ import { useAuth } from './context/AuthContext'
 import BottomNav from './components/BottomNav'
 import Loader from './components/Loader'
 import Footer from './components/Footer'
+import { GlobalAdScript } from './components/AdScript'
 
 import Login from './pages/Login'
 import Home from './pages/Home'
@@ -30,11 +31,14 @@ export default function App() {
 
   if (!user) {
     return (
-      <Routes>
-        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-        <Route path="/contact-support" element={<ContactSupport />} />
-        <Route path="*" element={<Login />} />
-      </Routes>
+      <>
+        <GlobalAdScript src="https://pl31429572.profitableratecpmnetwork.com/8f/d3/4f/8fd34fe714e421b3268826a08079f70d.js" />
+        <Routes>
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/contact-support" element={<ContactSupport />} />
+          <Route path="*" element={<Login />} />
+        </Routes>
+      </>
     )
   }
 
@@ -43,6 +47,7 @@ export default function App() {
 
   return (
     <div className={hideNav ? '' : 'pb-16'}>
+      <GlobalAdScript src="https://pl31429572.profitableratecpmnetwork.com/8f/d3/4f/8fd34fe714e421b3268826a08079f70d.js" />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />

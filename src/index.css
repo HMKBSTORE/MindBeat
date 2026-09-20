@@ -47,6 +47,19 @@
            font-medium text-ink placeholder:text-ink/30
            focus:outline-none focus:border-violet transition-colors;
   }
+  .ad-frame {
+    @apply max-w-full;
+  }
+  .ad-frame-banner {
+    min-height: 90px;
+  }
+  .ad-frame-square {
+    min-height: 250px;
+  }
+  .ad-frame-native {
+    width: 100%;
+    min-height: 90px;
+  }
   .loader-fox {
     @apply text-5xl animate-bounce;
     filter: drop-shadow(0 5px 0 rgba(108, 60, 233, 0.12));

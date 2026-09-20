@@ -8,6 +8,7 @@ import questionBank from '../data/questions.json'
 import Loader from '../components/Loader'
 import { playSound } from '../utils/audio'
 import { launchConfetti } from '../utils/confetti'
+import AdScript from '../components/AdScript'
 
 const QUESTIONS_PER_ROUND = 5
 const SECONDS_PER_QUESTION = 15
@@ -159,6 +160,14 @@ export default function Quiz() {
           {index + 1 >= questions.length ? 'See Results' : 'Next Question'} →
         </button>
       )}
+      <div className="mt-6 flex justify-center overflow-hidden">
+        <AdScript
+          src="https://pl31429569.profitableratecpmnetwork.com/e6a90c81da6ce7259296f90e8cd187e8/invoke.js"
+          containerId="container-e6a90c81da6ce7259296f90e8cd187e8"
+          label="Sponsored quiz content"
+          className="ad-frame ad-frame-native"
+        />
+      </div>
     </div>
   )
 }
