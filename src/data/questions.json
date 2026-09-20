@@ -1,0 +1,12 @@
+{
+  "categories": [
+    { "id": "revision", "label": "Class Revision", "emoji": "📚", "color": "violet" },
+    { "id": "gk", "label": "General Knowledge", "emoji": "🧠", "color": "mint" },
+    { "id": "fun", "label": "Fun & Riddles", "emoji": "😂", "color": "sun" },
+    { "id": "school", "label": "School Trivia", "emoji": "🏫", "color": "coral" },
+    { "id": "truefalse", "label": "True or False", "emoji": "⚖️", "color": "mint" },
+    { "id": "logic", "label": "IQ & Logic", "emoji": "🧩", "color": "violet" },
+    { "id": "flags", "label": "Guess the Flag", "emoji": "🚩", "color": "coral" }
+  ],
+  "questions": []
+}
