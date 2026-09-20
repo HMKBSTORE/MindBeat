@@ -10,7 +10,7 @@ import AdScript from '../components/AdScript'
 const MYSTERY_BOX_KEY = 'mindbeat:mystery-box-opened-at'
 const MYSTERY_BOX_COOLDOWN = 24 * 60 * 60 * 1000
 
-export default function Home() {
+export default function Home({ deferredInstallPrompt, clearDeferredInstallPrompt }) {
   const { profile, refreshProfile } = useAuth()
   if (!profile) return null
 
@@ -72,7 +72,10 @@ export default function Home() {
           className="ad-frame ad-frame-banner"
         />
       </div>
-      <InstallPrompt />
+      <InstallPrompt
+        deferredInstallPrompt={deferredInstallPrompt}
+        clearDeferredInstallPrompt={clearDeferredInstallPrompt}
+      />
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { useAuth } from './context/AuthContext'
 import BottomNav from './components/BottomNav'
 import Loader from './components/Loader'
@@ -26,6 +27,18 @@ import ContactSupport from './pages/ContactSupport'
 export default function App() {
   const { user, loading } = useAuth()
   const location = useLocation()
+  const [deferredInstallPrompt, setDeferredInstallPrompt] = useState(null)
+
+  useEffect(() => {
+    function captureInstallPrompt(event) {
+      event.preventDefault()
+      setDeferredInstallPrompt(event)
+      console.info('[MindBeat] beforeinstallprompt captured')
+    }
+
+    window.addEventListener('beforeinstallprompt', captureInstallPrompt)
+    return () => window.removeEventListener('beforeinstallprompt', captureInstallPrompt)
+  }, [])
 
   if (loading) return <Loader label="Waking up MindBeat..." />
 
@@ -49,7 +62,15 @@ export default function App() {
     <div className={hideNav ? '' : 'pb-16'}>
       <GlobalAdScript src="https://pl31429572.profitableratecpmnetwork.com/8f/d3/4f/8fd34fe714e421b3268826a08079f70d.js" />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              deferredInstallPrompt={deferredInstallPrompt}
+              clearDeferredInstallPrompt={setDeferredInstallPrompt}
+            />
+          }
+        />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/contact-support" element={<ContactSupport />} />
         <Route path="/play" element={<Play />} />
