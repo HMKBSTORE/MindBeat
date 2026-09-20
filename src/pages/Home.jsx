@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { claimMysteryReward } from '../utils/gamification'
 import { playSound } from '../utils/audio'
 import { useState } from 'react'
+import InstallPrompt from '../components/InstallPrompt'
 
 const MYSTERY_BOX_KEY = 'mindbeat:mystery-box-opened-at'
 const MYSTERY_BOX_COOLDOWN = 24 * 60 * 60 * 1000
@@ -61,6 +62,7 @@ export default function Home() {
       <Link to="/play" className="btn-primary w-full text-center block text-xl">
         Play Now 🎮
       </Link>
+      <InstallPrompt />
     </div>
   )
 }

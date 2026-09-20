@@ -19,6 +19,8 @@ import Snake from './games/Snake'
 import TicTacToe from './games/TicTacToe'
 import MemoryMatch from './games/MemoryMatch'
 import ReactionTest from './games/ReactionTest'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import ContactSupport from './pages/ContactSupport'
 
 export default function App() {
   const { user, loading } = useAuth()
@@ -29,6 +31,8 @@ export default function App() {
   if (!user) {
     return (
       <Routes>
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/contact-support" element={<ContactSupport />} />
         <Route path="*" element={<Login />} />
       </Routes>
     )
@@ -41,6 +45,8 @@ export default function App() {
     <div className={hideNav ? '' : 'pb-16'}>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/contact-support" element={<ContactSupport />} />
         <Route path="/play" element={<Play />} />
         <Route path="/quiz/:categoryId" element={<Quiz />} />
         <Route path="/daily-challenge" element={<DailyChallenge />} />
