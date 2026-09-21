@@ -29,6 +29,19 @@ export default function Leaderboard() {
 
   return (
     <div className="max-w-md mx-auto px-5 pt-8 pb-4">
+      <section className="relative mb-6 overflow-hidden rounded-3xl border-2 border-sun/30 bg-gradient-to-br from-violet via-violet-dark to-coral p-5 text-white shadow-[0_10px_0_0_rgba(78,36,190,0.14)]">
+        <div className="absolute -right-4 -top-5 text-6xl opacity-20" aria-hidden="true">🏆</div>
+        <div className="absolute -bottom-6 right-16 text-5xl opacity-15" aria-hidden="true">💸</div>
+        <div className="relative">
+          <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.14em] text-sun">Champion challenge</p>
+          <h2 className="max-w-[19rem] font-display text-2xl font-extrabold leading-tight sm:text-3xl">
+            Reach 🏆 5,000 XP — FIRST PLAYER WINS Rs 500 CASH 💸
+          </h2>
+          <p className="mt-3 max-w-[22rem] text-sm font-semibold leading-relaxed text-white/80">
+            Compete daily with your classmates! Once a champion hits the goal, check your registered email for cash reward details.
+          </p>
+        </div>
+      </section>
       <h1 className="text-2xl font-extrabold display mb-1">Rank 🏆</h1>
       <p className="text-ink/50 font-medium mb-5">Top players across MindBeat.</p>
 
