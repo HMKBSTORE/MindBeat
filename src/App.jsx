@@ -49,6 +49,7 @@ export default function App() {
         <Routes>
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact-support" element={<ContactSupport />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<Login />} />
         </Routes>
       </>
@@ -62,6 +63,7 @@ export default function App() {
     <div className={hideNav ? '' : 'pb-16'}>
       <GlobalAdScript src="https://pl31429572.profitableratecpmnetwork.com/8f/d3/4f/8fd34fe714e421b3268826a08079f70d.js" />
       <Routes>
+        <Route path="/login" element={<Navigate to="/" replace />} />
         <Route
           path="/"
           element={

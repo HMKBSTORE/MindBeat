@@ -3,7 +3,11 @@ import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut
+  signInWithPopup,
+  signOut,
+  GoogleAuthProvider,
+  setPersistence,
+  browserLocalPersistence
 } from 'firebase/auth'
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { auth, db } from '../firebase'
@@ -18,21 +22,29 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
-      setUser(firebaseUser)
-      if (firebaseUser) {
-        const snap = await getDoc(doc(db, 'students', firebaseUser.uid))
-        if (snap.exists()) {
-          const data = snap.data()
-          setProfile({ id: firebaseUser.uid, ...data })
-          await applyDailyStreakCheck(firebaseUser.uid, data)
-        }
-      } else {
-        setProfile(null)
-      }
-      setLoading(false)
-    })
-    return unsub
+    let unsub
+    setPersistence(auth, browserLocalPersistence)
+      .then(() => {
+        unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+          setUser(firebaseUser)
+          if (firebaseUser) {
+            const data = await ensureStudentProfile(firebaseUser)
+            setProfile({ id: firebaseUser.uid, ...data })
+            await applyDailyStreakCheck(firebaseUser.uid, data)
+          } else {
+            setProfile(null)
+          }
+          setLoading(false)
+        })
+      })
+      .catch((error) => {
+        console.error('Could not configure persistent authentication.', error)
+        unsub = onAuthStateChanged(auth, () => setLoading(false))
+      })
+
+    return () => {
+      if (unsub) unsub()
+    }
   }, [])
 
   async function signup({ name, avatar, email, password }) {
@@ -57,6 +69,14 @@ export function AuthProvider({ children }) {
     await signInWithEmailAndPassword(auth, email, password)
   }
 
+  async function signInWithGoogle() {
+    const result = await signInWithPopup(auth, new GoogleAuthProvider())
+    const data = await ensureStudentProfile(result.user)
+    setUser(result.user)
+    setProfile({ id: result.user.uid, ...data })
+    return result.user
+  }
+
   async function logout() {
     await signOut(auth)
   }
@@ -69,10 +89,31 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signup, login, logout, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, loading, signup, login, signInWithGoogle, logout, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   )
+}
+
+async function ensureStudentProfile(firebaseUser) {
+  const studentRef = doc(db, 'students', firebaseUser.uid)
+  const snap = await getDoc(studentRef)
+  if (snap.exists()) return snap.data()
+
+  const newProfile = {
+    name: firebaseUser.displayName || 'MindBeat Student',
+    email: firebaseUser.email || '',
+    avatar: '🦊',
+    points: 0,
+    streak: 0,
+    longestStreak: 0,
+    lastPlayedDate: null,
+    badges: [],
+    history: [],
+    createdAt: serverTimestamp()
+  }
+  await setDoc(studentRef, newProfile)
+  return newProfile
 }
 
 // Checks if the student already played today; if this is a new day,
