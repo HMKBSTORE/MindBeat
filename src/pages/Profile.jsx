@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { LogOut, Swords } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { BADGES } from '../utils/gamification'
+import StaticBannerAd from '../components/StaticBannerAd'
 
 export default function Profile() {
   const { profile, logout } = useAuth()
@@ -57,6 +58,16 @@ export default function Profile() {
       <button onClick={logout} className="btn-secondary w-full flex items-center justify-center gap-2 text-coral">
         <LogOut size={18} /> Log Out
       </button>
+
+      <div className="mt-8 flex justify-center rounded-2xl bg-white/60 p-2">
+        <StaticBannerAd
+          adKey="c0f1d8d38891544f85367a7b10460988"
+          width={300}
+          height={250}
+          label="Sponsored profile box"
+          className="ad-frame-square"
+        />
+      </div>
     </div>
   )
 }

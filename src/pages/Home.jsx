@@ -5,7 +5,7 @@ import { claimMysteryReward } from '../utils/gamification'
 import { playSound } from '../utils/audio'
 import { useState } from 'react'
 import InstallPrompt from '../components/InstallPrompt'
-import AdScript from '../components/AdScript'
+import StaticBannerAd from '../components/StaticBannerAd'
 
 const MYSTERY_BOX_KEY = 'mindbeat:mystery-box-opened-at'
 const MYSTERY_BOX_COOLDOWN = 24 * 60 * 60 * 1000
@@ -64,8 +64,8 @@ export default function Home({ deferredInstallPrompt, clearDeferredInstallPrompt
         Play Now 🎮
       </Link>
       <div className="mt-8 flex justify-center overflow-hidden rounded-2xl bg-white/60 p-2">
-        <AdScript
-          src="https://www.highrevenueformat.com/cec18556d49d26ed90145b3d0897b9b7/invoke.js"
+        <StaticBannerAd
+          adKey="cec18556d49d26ed90145b3d0897b9b7"
           width={728}
           height={90}
           label="Sponsored dashboard banner"

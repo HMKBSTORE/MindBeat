@@ -60,6 +60,9 @@
     width: 100%;
     min-height: 90px;
   }
+  .ad-frame iframe {
+    max-width: 100%;
+  }
   .loader-fox {
     @apply text-5xl animate-bounce;
     filter: drop-shadow(0 5px 0 rgba(108, 60, 233, 0.12));

@@ -8,6 +8,7 @@ import Loader from '../components/Loader'
 import questionBank from '../data/questions.json'
 import { playSound } from '../utils/audio'
 import { launchConfetti } from '../utils/confetti'
+import StaticBannerAd from '../components/StaticBannerAd'
 
 const SECONDS_PER_QUESTION = 15
 const QUESTIONS_IN_CHALLENGE = 5
@@ -163,6 +164,15 @@ export default function DailyChallenge() {
           {index + 1 >= todaysQuestions.length ? 'Finish' : 'Next'} →
         </button>
       )}
+      <div className="mt-6 flex justify-center overflow-hidden">
+        <StaticBannerAd
+          adKey="cec18556d49d26ed90145b3d0897b9b7"
+          width={728}
+          height={90}
+          label="Sponsored daily challenge banner"
+          className="ad-frame-banner"
+        />
+      </div>
     </div>
   )
 }
