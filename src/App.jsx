@@ -16,10 +16,6 @@ import PublicProfile from './pages/PublicProfile'
 import Challenge from './pages/Challenge'
 import ChallengePlay from './pages/ChallengePlay'
 import Admin from './pages/Admin'
-import Snake from './games/Snake'
-import TicTacToe from './games/TicTacToe'
-import MemoryMatch from './games/MemoryMatch'
-import ReactionTest from './games/ReactionTest'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import ContactSupport from './pages/ContactSupport'
 
@@ -79,10 +75,6 @@ export default function App() {
         <Route path="/challenge" element={<Challenge />} />
         <Route path="/challenge/:challengeId" element={<ChallengePlay />} />
         <Route path="/admin" element={<Admin />} />
-        <Route path="/games/snake" element={<Snake />} />
-        <Route path="/games/tictactoe" element={<TicTacToe />} />
-        <Route path="/games/memory" element={<MemoryMatch />} />
-        <Route path="/games/reaction" element={<ReactionTest />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       {!hideNav && <BottomNav />}
