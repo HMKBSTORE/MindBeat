@@ -18,6 +18,7 @@ import ChallengePlay from './pages/ChallengePlay'
 import Admin from './pages/Admin'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import ContactSupport from './pages/ContactSupport'
+import CubeGame from './pages/CubeGame'
 
 export default function App() {
   const { user, loading } = useAuth()
@@ -75,6 +76,7 @@ export default function App() {
         <Route path="/challenge" element={<Challenge />} />
         <Route path="/challenge/:challengeId" element={<ChallengePlay />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/games/the-cube" element={<CubeGame />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       {!hideNav && <BottomNav />}

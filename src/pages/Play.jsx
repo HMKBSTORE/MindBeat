@@ -4,13 +4,8 @@ import questionBank from '../data/questions.json'
 
 const colorMap = { violet: 'bg-violet', mint: 'bg-mint', sun: 'bg-sun', coral: 'bg-coral' }
 
-// Add more here as they're built. Each needs an id (matches the route
-// /games/:id), a label, emoji and color from the palette.
 const GAMES = [
-  { id: 'snake', label: 'Snake', emoji: '🐍', color: 'mint' },
-  { id: 'tictactoe', label: 'Tic-Tac-Toe', emoji: '⭕', color: 'violet' },
-  { id: 'memory', label: 'Memory Match', emoji: '🧩', color: 'sun' },
-  { id: 'reaction', label: 'Reaction Test', emoji: '⚡', color: 'coral' }
+  { id: 'the-cube', label: 'The Cube', emoji: '🧊', color: 'violet' }
 ]
 
 export default function Play() {
