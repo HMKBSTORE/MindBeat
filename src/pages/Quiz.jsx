@@ -162,11 +162,9 @@ export default function Quiz() {
       )}
       <div className="mt-6 flex justify-center overflow-hidden">
         <StaticBannerAd
-          adKey="cec18556d49d26ed90145b3d0897b9b7"
-          width={728}
-          height={90}
+          adKey="e6a90c81da6ce7259296f90e8cd187e8"
           label="Sponsored quiz banner"
-          className="ad-frame-banner"
+          className="ad-frame-native"
         />
       </div>
     </div>
