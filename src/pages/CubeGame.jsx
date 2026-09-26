@@ -1,12 +1,15 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
 import StaticBannerAd from '../components/StaticBannerAd'
 
 export default function CubeGame() {
+  const { user } = useAuth()
+
   return (
     <main className="fixed inset-0 z-50 bg-[#10131d]">
       <div className="absolute left-4 top-4 z-10">
         <Link
-          to="/play"
+          to={user ? '/play' : '/'}
           className="inline-flex items-center rounded-full bg-black/45 px-4 py-2 text-sm font-semibold text-white backdrop-blur transition hover:bg-black/65"
         >
           Back to games

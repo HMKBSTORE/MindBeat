@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /admin
+Disallow: /play
+Disallow: /leaderboard
+Disallow: /profile
+Disallow: /student/
+Disallow: /quiz/
+Disallow: /daily-challenge
+Disallow: /challenge
+
+Sitemap: https://mindbeat.online/sitemap.xml

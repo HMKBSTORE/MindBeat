@@ -55,7 +55,7 @@ export default function Login() {
       <div className="text-center mb-8">
         <div className="text-5xl mb-2">🧠⚡</div>
         <h1 className="display text-4xl font-extrabold text-violet">MindBeat</h1>
-        <p className="text-ink/50 font-medium mt-1">Quiz. Compete. Beat your friends.</p>
+        <p className="text-ink/50 font-medium mt-1">Online quizzes, trivia, and casual games.</p>
       </div>
 
       <div className="flex bg-violet-light rounded-full p-1 mb-6">
