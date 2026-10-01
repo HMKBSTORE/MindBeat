@@ -2,30 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#6C3CE9" />
     <meta name="google-site-verification" content="jBhc9lxtGYBjopjRbZaw8QrC44M3QI3a_FYNndNampo" />
-    <meta name="description" content="MindBeat is an online quiz and gaming platform for trivia challenges, XP, leaderboard competition, and casual games including a 3D cube puzzle." />
+    <meta name="description" content="Play free online quizzes and MCQs, take daily challenges, earn XP, and explore browser games like MindBeat Battle and the 3D Cube." />
     <meta name="robots" content="index,follow" />
     <link rel="canonical" href="https://mindbeat.online/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="MindBeat" />
-    <meta property="og:title" content="MindBeat — Online Quizzes, Trivia &amp; Games" />
-    <meta property="og:description" content="Play online quizzes and trivia challenges, earn XP, climb the leaderboard, and enjoy casual games including a 3D cube puzzle." />
+    <meta property="og:title" content="MindBeat | Free Online Quizzes, MCQs &amp; Games" />
+    <meta property="og:description" content="Play free online quizzes and MCQs, take daily challenges, earn XP, and explore browser games like MindBeat Battle and the 3D Cube." />
     <meta property="og:url" content="https://mindbeat.online/" />
     <meta property="og:image" content="https://mindbeat.online/icon-512.png" />
     <meta property="og:image:alt" content="MindBeat app icon" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="MindBeat — Online Quizzes, Trivia &amp; Games" />
-    <meta name="twitter:description" content="Play online quizzes and trivia challenges, earn XP, climb the leaderboard, and enjoy casual games including a 3D cube puzzle." />
+    <meta name="twitter:title" content="MindBeat | Free Online Quizzes, MCQs &amp; Games" />
+    <meta name="twitter:description" content="Play free online quizzes and MCQs, take daily challenges, earn XP, and explore browser games like MindBeat Battle and the 3D Cube." />
     <meta name="twitter:image" content="https://mindbeat.online/icon-512.png" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="MindBeat" />
     <link rel="apple-touch-icon" href="/icon-192.png" />
-    <title>MindBeat — Online Quizzes, Trivia &amp; Games</title>
-    <script type="application/ld+json">
+    <title>MindBeat | Free Online Quizzes, MCQs &amp; Games</title>
+    <script id="mindbeat-route-schema" type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@graph": [
@@ -45,14 +45,24 @@
             "description": "Online quizzes, trivia challenges, XP competition, and casual games including a 3D cube puzzle."
           },
           {
-            "@type": "SoftwareApplication",
+            "@type": "WebApplication",
             "@id": "https://mindbeat.online/#application",
             "name": "MindBeat",
             "url": "https://mindbeat.online/",
             "applicationCategory": "GameApplication",
-            "operatingSystem": "Web browser",
-            "description": "An online quiz and casual gaming platform with trivia challenges, XP, a leaderboard, and a 3D cube puzzle.",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript and a modern web browser.",
+            "description": "An online quiz and casual gaming platform with trivia challenges, XP, a leaderboard, MindBeat Battle, and a 3D cube puzzle.",
+            "featureList": ["Online MCQ quizzes", "Daily quiz challenges", "XP leaderboard", "3D cube puzzle", "MindBeat Battle"],
             "publisher": { "@id": "https://mindbeat.online/#organization" }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://mindbeat.online/#webpage",
+            "url": "https://mindbeat.online/",
+            "name": "MindBeat | Free Online Quizzes, MCQs & Games",
+            "isPartOf": { "@id": "https://mindbeat.online/#website" },
+            "about": { "@id": "https://mindbeat.online/#application" }
           }
         ]
       }

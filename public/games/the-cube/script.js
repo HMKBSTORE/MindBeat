@@ -101,6 +101,8 @@ class World extends Animation {
 
     this.renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
     this.renderer.setPixelRatio( window.devicePixelRatio );
+    this.renderer.domElement.setAttribute( 'role', 'application' );
+    this.renderer.domElement.setAttribute( 'aria-label', 'Interactive 3D cube puzzle. Rotate the cube, scramble it, and solve it using pointer or touch controls.' );
     this.container.appendChild( this.renderer.domElement );
 
     this.camera = new THREE.PerspectiveCamera( 2, 1, 0.1, 10000 );

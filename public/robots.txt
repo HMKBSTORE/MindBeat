@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
+Allow: /games
+Allow: /games/
+Allow: /mcq-quiz
 Disallow: /login
 Disallow: /admin
 Disallow: /play

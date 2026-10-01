@@ -2,8 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MindBeat Battle - 3D Action Collector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Play MindBeat Battle, a 3D browser action game. Collect stars, avoid arena chasers, use power-ups, and face the boss across five levels.">
+    <link rel="canonical" href="https://mindbeat.online/games/mindbeat-battle">
+    <meta property="og:type" content="video.game">
+    <meta property="og:site_name" content="MindBeat">
+    <meta property="og:title" content="MindBeat Battle — Free 3D Browser Game">
+    <meta property="og:description" content="Collect stars, avoid arena chasers, use power-ups, and face the boss across five levels in MindBeat Battle.">
+    <meta property="og:url" content="https://mindbeat.online/games/mindbeat-battle">
+    <meta property="og:image" content="https://mindbeat.online/icon-512.png">
+    <meta property="og:image:alt" content="MindBeat app icon">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="MindBeat Battle — Free 3D Browser Game">
+    <meta name="twitter:description" content="Collect stars and battle arena chasers in this five-level 3D browser game.">
+    <meta name="twitter:image" content="https://mindbeat.online/icon-512.png">
+    <title>MindBeat Battle — Free 3D Browser Game</title>
     
     <style>
         * {
@@ -310,7 +323,7 @@
     </style>
 
     <!-- Load Three.js 3D Engine -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 </head>
 <body>
     <div id="game-container">
@@ -400,6 +413,7 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
         /* =========================================================================
            SYNTHESIZED SOUND ENGINE (Web Audio API)
            ========================================================================= */
@@ -548,6 +562,8 @@
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.shadowMap.enabled = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.domElement.setAttribute('role', 'application');
+            renderer.domElement.setAttribute('aria-label', 'MindBeat Battle 3D arena. Use WASD or the arrow keys on desktop, or the on-screen joystick on touch devices.');
             container.appendChild(renderer.domElement);
 
             // Lighting setup
@@ -1371,6 +1387,10 @@
             initThree();
             animate();
         };
+        window.startGame = startGame;
+        window.nextLevel = nextLevel;
+        window.restartGame = restartGame;
+        });
     </script>
 </body>
 </html>

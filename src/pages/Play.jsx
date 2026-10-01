@@ -1,13 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import questionBank from '../data/questions.json'
+import games from '../data/games'
 
 const colorMap = { violet: 'bg-violet', mint: 'bg-mint', sun: 'bg-sun', coral: 'bg-coral' }
-
-const GAMES = [
-  { id: 'the-cube', label: 'The Cube', emoji: '🧊', color: 'violet' },
-  { id: 'mindbeat-battle', label: 'MindBeat Battle', emoji: '⚔️', color: 'coral' }
-]
 
 export default function Play() {
   const navigate = useNavigate()
@@ -49,10 +45,10 @@ export default function Play() {
         <>
           <p className="text-ink/50 font-medium mb-4">Quick games for when you need a break.</p>
           <div className="grid grid-cols-2 gap-4">
-            {GAMES.map((g) => (
+            {games.map((g) => (
               <button
                 key={g.id}
-                onClick={() => navigate(`/games/${g.id}`)}
+                onClick={() => navigate(g.path)}
                 className={`${colorMap[g.color]} tap-scale rounded-3xl p-5 text-white text-left flex flex-col gap-6 h-36 shadow-sm`}
               >
                 <span className="text-3xl">{g.emoji}</span>

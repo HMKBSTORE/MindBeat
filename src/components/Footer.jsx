@@ -7,6 +7,10 @@ export default function Footer() {
       <span className="mx-2 text-ink/20">|</span>
       <span>© 2026 MindBeat Inc.</span>
       <span className="mx-2 text-ink/20">|</span>
+      <Link to="/games" className="hover:text-violet transition-colors">Games</Link>
+      <span className="mx-2 text-ink/20">|</span>
+      <Link to="/mcq-quiz" className="hover:text-violet transition-colors">MCQ Quizzes</Link>
+      <span className="mx-2 text-ink/20">|</span>
       <Link to="/privacy-policy" className="hover:text-violet transition-colors">Privacy Policy</Link>
       <span className="mx-2 text-ink/20">|</span>
       <Link to="/contact-support" className="hover:text-violet transition-colors">Contact Support</Link>
