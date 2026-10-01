@@ -21,7 +21,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)       // Firebase auth user
   const [profile, setProfile] = useState(null) // Firestore student profile
   const [loading, setLoading] = useState(true)
-  const [rewardEligibility, setRewardEligibility] = useState('checking')
+  const [deviceEligibility, setDeviceEligibility] = useState('checking')
 
   useEffect(() => {
     let unsub
@@ -31,25 +31,25 @@ export function AuthProvider({ children }) {
         unsub = onAuthStateChanged(auth, async (firebaseUser) => {
           const currentVersion = ++authChangeVersion
           setUser(firebaseUser)
-          setRewardEligibility(firebaseUser ? 'checking' : 'not-authenticated')
+          setDeviceEligibility(firebaseUser ? 'checking' : 'not-authenticated')
           if (firebaseUser) {
             const data = await ensureStudentProfile(firebaseUser)
             setProfile({ id: firebaseUser.uid, ...data })
             await applyDailyStreakCheck(firebaseUser.uid, data)
             setLoading(false)
-            registerRewardDevice()
+            registerDevice()
               .then((result) => {
                 if (currentVersion === authChangeVersion) {
-                  setRewardEligibility(result.eligible ? 'eligible' : 'restricted')
+                  setDeviceEligibility(result.eligible ? 'eligible' : 'restricted')
                 }
               })
               .catch((error) => {
-                console.warn('Reward account validation is unavailable.', error)
-                if (currentVersion === authChangeVersion) setRewardEligibility('unavailable')
+                console.warn('Device registration is unavailable.', error)
+                if (currentVersion === authChangeVersion) setDeviceEligibility('unavailable')
               })
           } else {
             setProfile(null)
-            setRewardEligibility('not-authenticated')
+            setDeviceEligibility('not-authenticated')
             setLoading(false)
           }
         })
@@ -106,18 +106,18 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, rewardEligibility, signup, login, signInWithGoogle, logout, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, loading, deviceEligibility, signup, login, signInWithGoogle, logout, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   )
 }
 
-async function registerRewardDevice() {
+async function registerDevice() {
   const deviceRegistrationId = getDeviceRegistrationId()
   if (!deviceRegistrationId) throw new Error('Browser storage is unavailable for device registration.')
 
-  const initializeRewardAccount = httpsCallable(functions, 'initializeRewardAccount')
-  const response = await initializeRewardAccount({ deviceRegistrationId })
+  const registerDeviceCallable = httpsCallable(functions, 'registerDevice')
+  const response = await registerDeviceCallable({ deviceRegistrationId })
   return response.data
 }
 

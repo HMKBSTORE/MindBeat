@@ -22,8 +22,7 @@ service cloud.firestore {
                        ]) &&
                        request.resource.data.points == 0;
       // `points` is the existing client-managed XP field used by the current
-      // quiz and permanent leaderboard. Reward-wallet fields are intentionally
-      // excluded and can only be initialized or changed by Admin SDK Functions.
+      // quiz and permanent leaderboard. Unlisted fields cannot be client-written.
       allow update: if ownsStudent(studentId) &&
                        request.resource.data.diff(resource.data).affectedKeys().hasOnly([
                          'name', 'avatar', 'points', 'streak', 'longestStreak',
@@ -32,10 +31,6 @@ service cloud.firestore {
                        ]);
       allow delete: if false;
 
-      match /transactions/{transactionId} {
-        allow read: if ownsStudent(studentId);
-        allow create, update, delete: if false;
-      }
     }
 
     // Any logged-in student can read questions (to play quizzes).
@@ -56,33 +51,11 @@ service cloud.firestore {
                        request.auth.uid in resource.data.participants;
     }
 
-    // Device ownership, risk records, wallet ledger, claims, sessions,
-    // referrals, tournaments, and withdrawals are server-only foundations.
+    // Device ownership and risk records are server-only.
     match /registered_devices/{deviceId} {
       allow read, write: if false;
     }
     match /device_risk_events/{eventId} {
-      allow read, write: if false;
-    }
-    match /reward_security/{uid} {
-      allow read, write: if false;
-    }
-    match /withdrawal_requests/{requestId} {
-      allow read, write: if false;
-    }
-    match /referrals/{referralId} {
-      allow read, write: if false;
-    }
-    match /tournament_periods/{periodId} {
-      allow read, write: if false;
-    }
-    match /game_sessions/{sessionId} {
-      allow read, write: if false;
-    }
-    match /daily_claims/{claimId} {
-      allow read, write: if false;
-    }
-    match /lucky_spins/{spinId} {
       allow read, write: if false;
     }
   }

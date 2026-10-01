@@ -7,9 +7,9 @@ initializeApp()
 const db = getFirestore()
 const enforceAppCheck = process.env.ENFORCE_APP_CHECK === 'true'
 
-exports.initializeRewardAccount = onCall({ enforceAppCheck }, async (request) => {
+exports.registerDevice = onCall({ enforceAppCheck }, async (request) => {
   if (!request.auth) {
-    throw new HttpsError('unauthenticated', 'Sign in to initialize reward eligibility.')
+    throw new HttpsError('unauthenticated', 'Sign in to register this device.')
   }
 
   let deviceHash
@@ -62,25 +62,6 @@ exports.initializeRewardAccount = onCall({ enforceAppCheck }, async (request) =>
       })
     }
 
-    const student = studentSnapshot.data()
-    const walletPatch = {
-      walletPoints: Number.isSafeInteger(student.walletPoints) && student.walletPoints >= 0
-        ? student.walletPoints
-        : 0,
-      lockedPoints: Number.isSafeInteger(student.lockedPoints) && student.lockedPoints >= 0
-        ? student.lockedPoints
-        : 0,
-      walletUpdatedAt: now,
-    }
-    if (!student.rewardAccountInitializedAt) {
-      walletPatch.rewardAccountInitializedAt = now
-    }
-
-    transaction.set(studentRef, walletPatch, { merge: true })
-    return {
-      eligible: true,
-      walletPoints: walletPatch.walletPoints,
-      lockedPoints: walletPatch.lockedPoints,
-    }
+    return { eligible: true }
   })
 })

@@ -140,29 +140,23 @@ mindbeat/
       Admin.jsx                        → add new questions (admin only)
 ```
 
-## Reward Security Foundation (Phase 1)
+## Device Registration Foundation
 
-MindBeat keeps its existing `students/{uid}.points` value as leaderboard XP. The
-separate `walletPoints` and `lockedPoints` fields are initialized by the
-`initializeRewardAccount` callable and must only be changed by trusted Cloud
-Functions. Transaction documents are stored at
-`students/{uid}/transactions/{transactionId}` and clients have read-only access.
+The existing `students/{uid}.points` field remains the app's current quiz score
+and leaderboard value. MindBeat does not currently expose a reward wallet,
+daily check-in, or quiz reward-points system. A callable records a hashed browser
+installation ID to detect an installation being reused by another account.
+Browser storage can be cleared or copied, so this is a risk signal rather than
+a hardware-bound identity.
 
-Before deploying this foundation:
+Before deploying the device-registration foundation:
 
 1. Install Functions dependencies with `npm --prefix functions install`.
-2. Deploy the tightened rules and callable with `firebase deploy --only firestore:rules,functions`.
+2. Deploy the rules and callable with `firebase deploy --only firestore:rules,functions`.
 3. Configure Firebase App Check for the web app and set
-  `VITE_FIREBASE_APP_CHECK_SITE_KEY` in the hosting build environment. Only
-  then set `ENFORCE_APP_CHECK=true` in the Functions environment and redeploy.
+   `VITE_FIREBASE_APP_CHECK_SITE_KEY` in the hosting build environment. Only
+   then set `ENFORCE_APP_CHECK=true` in the Functions environment and redeploy.
 4. Run `npm run test:functions` for the local device-ID validation tests.
-
-Existing profiles initialize their separate zeroed wallet on their next
-successful server registration; their XP, streak, quiz history, and leaderboard
-data are not migrated or rewritten. Browser installation IDs are hashed before
-storage and checked server-side, but browser storage can be cleared or copied;
-this is a risk signal, not a hardware-bound identity. App Check and later
-server-authoritative reward operations are required before enabling earnings.
 
 ## Making changes / adding features later
 - **Add more questions:** just use the `/admin` page — no code needed.
