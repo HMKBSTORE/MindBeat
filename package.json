@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "npm run build && firebase deploy"
+    "deploy": "npm run build && firebase deploy",
+    "test:functions": "npm --prefix functions test"
   },
   "dependencies": {
     "firebase": "^10.12.0",

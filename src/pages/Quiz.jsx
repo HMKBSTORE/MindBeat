@@ -9,6 +9,7 @@ import Loader from '../components/Loader'
 import { playSound } from '../utils/audio'
 import { launchConfetti } from '../utils/confetti'
 import StaticBannerAd from '../components/StaticBannerAd'
+import { callRewardFunction } from '../utils/rewardClient'
 
 const QUESTIONS_PER_ROUND = 5
 const SECONDS_PER_QUESTION = 15
@@ -16,7 +17,7 @@ const SECONDS_PER_QUESTION = 15
 export default function Quiz() {
   const { categoryId } = useParams()
   const navigate = useNavigate()
-  const { user, profile, refreshProfile } = useAuth()
+  const { user, profile, refreshProfile, rewardEligibility } = useAuth()
 
   const category = questionBank.categories.find((c) => c.id === categoryId)
 
@@ -28,11 +29,29 @@ export default function Quiz() {
   const [timeLeft, setTimeLeft] = useState(SECONDS_PER_QUESTION)
   const [finished, setFinished] = useState(false)
   const [result, setResult] = useState(null)
+  const [rewardAttemptId, setRewardAttemptId] = useState(null)
+  const [answers, setAnswers] = useState({})
+  const [rewardResult, setRewardResult] = useState(null)
+  const [rewardError, setRewardError] = useState('')
 
   // Load questions: local starter bank + anything the admin added to Firestore, merged.
   useEffect(() => {
     let cancelled = false
     async function load() {
+      if (rewardEligibility === 'checking') return
+      if (user && rewardEligibility === 'eligible') {
+        try {
+          const attempt = await callRewardFunction('startRewardQuiz', { categoryId })
+          if (!cancelled) {
+            setRewardAttemptId(attempt.attemptId)
+            setQuestions(attempt.questions)
+          }
+          return
+        } catch (error) {
+          console.warn('Could not start the points-eligible quiz attempt; continuing with the standard quiz.', error)
+        }
+      }
+
       const local = questionBank.questions.filter((q) => q.category === categoryId)
       let remote = []
       try {
@@ -47,7 +66,7 @@ export default function Quiz() {
     }
     load()
     return () => { cancelled = true }
-  }, [categoryId])
+  }, [categoryId, rewardEligibility, user])
 
   const current = questions?.[index]
 
@@ -55,6 +74,7 @@ export default function Quiz() {
     if (locked || !current) return
     setLocked(true)
     setSelected(optionIndex)
+    setAnswers((previous) => ({ ...previous, [current.id]: optionIndex }))
     if (optionIndex === current.answer) {
       setCorrectCount((c) => c + 1)
       playSound('correct')
@@ -97,6 +117,21 @@ export default function Quiz() {
       })
       setResult(res)
       if (res.newStreak > profile.streak) playSound('streak')
+      if (rewardAttemptId) {
+        try {
+          const points = await callRewardFunction('completeRewardQuiz', {
+            attemptId: rewardAttemptId,
+            answers: questions.map((question) => ({
+              questionId: question.id,
+              answerIndex: answers[question.id] ?? -1,
+            })),
+          })
+          setRewardResult(points)
+          if (points.pointsAwarded > 0) await refreshProfile()
+        } catch (error) {
+          setRewardError(error.message || 'Quiz reward could not be verified.')
+        }
+      }
       refreshProfile()
     }
   }
@@ -119,7 +154,15 @@ export default function Quiz() {
   }
 
   if (finished) {
-    return <ResultScreen correct={correctCount} total={questions.length} result={result} category={category} navigate={navigate} />
+    return <ResultScreen
+      correct={correctCount}
+      total={questions.length}
+      result={result}
+      rewardResult={rewardResult}
+      rewardError={rewardError}
+      category={category}
+      navigate={navigate}
+    />
   }
 
   return (
@@ -179,7 +222,7 @@ function optionClasses(locked, selected, correctIndex, i) {
   return `${base} border-violet-light bg-white opacity-50`
 }
 
-function ResultScreen({ correct, total, result, category, navigate }) {
+function ResultScreen({ correct, total, result, rewardResult, rewardError, category, navigate }) {
   const pct = Math.round((correct / total) * 100)
   const isGreat = pct >= 80
 
@@ -200,7 +243,7 @@ function ResultScreen({ correct, total, result, category, navigate }) {
         <div className="w-full grid grid-cols-2 gap-3 mb-4">
           <div className="card">
             <p className="font-extrabold text-lg text-sun">+{result.pointsEarned} XP</p>
-            <p className="text-xs text-ink/50 font-medium">Points earned</p>
+            <p className="text-xs text-ink/50 font-medium">XP earned</p>
           </div>
           <div className="card">
             <p className="font-extrabold text-lg text-coral">🔥 {result.newStreak}</p>
@@ -208,6 +251,21 @@ function ResultScreen({ correct, total, result, category, navigate }) {
           </div>
         </div>
       )}
+
+      {rewardResult?.pointsAwarded > 0 && (
+        <div className="mb-4 w-full rounded-2xl border-2 border-mint/30 bg-mint/10 px-4 py-3">
+          <p className="font-extrabold text-mint">+{rewardResult.pointsAwarded} reward points</p>
+          <p className="text-xs font-medium text-ink/50">Added separately from XP to your wallet.</p>
+        </div>
+      )}
+      {rewardResult && rewardResult.pointsAwarded === 0 && (
+        <p className="mb-4 text-sm font-medium text-ink/50">
+          {rewardResult.reason === 'minimum_accuracy_not_met'
+            ? 'This quiz did not meet the accuracy needed for reward points.'
+            : 'This quiz reward was already claimed.'}
+        </p>
+      )}
+      {rewardError && <p role="status" className="mb-4 text-sm font-medium text-ink/50">Reward points could not be verified right now. Your XP result is saved.</p>}
 
       {result?.newBadges?.length > 0 && (
         <div className="w-full mb-4">

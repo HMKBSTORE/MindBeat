@@ -11,6 +11,7 @@ import {
 } from 'firebase/auth'
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { auth, db } from '../firebase'
+import { callRewardFunction } from '../utils/rewardClient'
 
 const AuthContext = createContext(null)
 
@@ -20,21 +21,44 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)       // Firebase auth user
   const [profile, setProfile] = useState(null) // Firestore student profile
   const [loading, setLoading] = useState(true)
+  const [rewardEligibility, setRewardEligibility] = useState('checking')
 
   useEffect(() => {
     let unsub
+    let authChangeVersion = 0
     setPersistence(auth, browserLocalPersistence)
       .then(() => {
         unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+          const currentVersion = ++authChangeVersion
           setUser(firebaseUser)
+          setRewardEligibility(firebaseUser ? 'checking' : 'not-authenticated')
           if (firebaseUser) {
             const data = await ensureStudentProfile(firebaseUser)
             setProfile({ id: firebaseUser.uid, ...data })
             await applyDailyStreakCheck(firebaseUser.uid, data)
+            setLoading(false)
+            registerRewardDevice()
+              .then((result) => {
+                if (currentVersion === authChangeVersion) {
+                  setRewardEligibility(result.eligible ? 'eligible' : 'restricted')
+                  if (result.eligible) {
+                    setProfile((current) => current ? {
+                      ...current,
+                      walletPoints: result.walletPoints,
+                      lockedPoints: result.lockedPoints,
+                    } : current)
+                  }
+                }
+              })
+              .catch((error) => {
+                console.warn('Reward account validation is unavailable.', error)
+                if (currentVersion === authChangeVersion) setRewardEligibility('unavailable')
+              })
           } else {
             setProfile(null)
+            setRewardEligibility('not-authenticated')
+            setLoading(false)
           }
-          setLoading(false)
         })
       })
       .catch((error) => {
@@ -89,10 +113,14 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signup, login, signInWithGoogle, logout, refreshProfile }}>
+    <AuthContext.Provider value={{ user, profile, loading, rewardEligibility, signup, login, signInWithGoogle, logout, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   )
+}
+
+async function registerRewardDevice() {
+  return callRewardFunction('initializeRewardAccount')
 }
 
 async function ensureStudentProfile(firebaseUser) {

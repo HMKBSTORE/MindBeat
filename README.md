@@ -1,6 +1,6 @@
 # MindBeat 🧠⚡
 
-Quiz. Compete. Beat your friends. — a mobile-first quiz competition app built for [your school name].
+MindBeat is a mobile-first quiz competition app built for students.
 
 This README assumes you have **zero prior experience with Firebase**. Follow the steps in order.
 
@@ -37,7 +37,7 @@ npm install
 
 1. In Firestore Database, click the **Rules** tab.
 2. Delete everything there and paste the entire contents of the `firestore.rules` file from this project.
-3. **Important:** replace `"your-email@example.com"` in that file with the email you're going to use as your admin account (the account that will add quiz questions).
+3. The question-management rule uses the admin email configured in `src/firebase.js`; keep those values in sync if you change the admin account.
 4. Click **Publish**.
 
 ---
@@ -139,6 +139,45 @@ mindbeat/
       Profile.jsx                     → stats, badges, history, logout
       Admin.jsx                        → add new questions (admin only)
 ```
+
+## Reward Security Foundation (Phase 1)
+
+MindBeat keeps its existing `students/{uid}.points` value as leaderboard XP. The
+separate `walletPoints` and `lockedPoints` fields are initialized by the
+`initializeRewardAccount` callable and must only be changed by trusted Cloud
+Functions. Transaction documents are stored at
+`students/{uid}/transactions/{transactionId}` and clients have read-only access.
+
+Before deploying this foundation:
+
+1. Install Functions dependencies with `npm --prefix functions install`.
+2. Deploy the tightened rules and callable with `firebase deploy --only firestore:rules,functions`.
+3. Configure Firebase App Check for the web app and set
+  `VITE_FIREBASE_APP_CHECK_SITE_KEY` in the hosting build environment. Only
+  then set `ENFORCE_APP_CHECK=true` in the Functions environment and redeploy.
+4. Run `npm run test:functions` for the local device-ID validation tests.
+
+Existing profiles initialize their separate zeroed wallet on their next
+successful server registration; their XP, streak, quiz history, and leaderboard
+data are not migrated or rewritten. Browser installation IDs are hashed before
+storage and checked server-side, but browser storage can be cleared or copied;
+this is a risk signal, not a hardware-bound identity. App Check and later
+server-authoritative reward operations are required before enabling earnings.
+
+### Phase 2: Wallet and quiz rewards
+
+The Profile page shows available, locked, and total reward points, an estimated
+PKR value, daily check-in, and the latest wallet ledger entries. A check-in is
+limited to once per 24 hours using the server-stored timestamp and earns the
+configured amount. Quiz reward attempts use five questions selected by the
+server from published Firestore questions; at least the configured accuracy
+threshold must be met, and a user can receive one quiz reward per category per
+UTC day. Attempts expire after the configured duration. Existing quiz XP is
+still awarded through its existing path and is not counted as wallet points.
+
+Reward amounts, conversion, quiz accuracy threshold, and attempt expiry are
+centralized in `shared/rewardsConfig.json`. Deploy the Firestore rules and
+Functions before expecting check-in or quiz wallet rewards to work.
 
 ## Making changes / adding features later
 - **Add more questions:** just use the `/admin` page — no code needed.
