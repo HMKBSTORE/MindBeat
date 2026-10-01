@@ -5,7 +5,8 @@ import questionBank from '../data/questions.json'
 const colorMap = { violet: 'bg-violet', mint: 'bg-mint', sun: 'bg-sun', coral: 'bg-coral' }
 
 const GAMES = [
-  { id: 'the-cube', label: 'The Cube', emoji: '🧊', color: 'violet' }
+  { id: 'the-cube', label: 'The Cube', emoji: '🧊', color: 'violet' },
+  { id: 'mindbeat-battle', label: 'MindBeat Battle', emoji: '⚔️', color: 'coral' }
 ]
 
 export default function Play() {

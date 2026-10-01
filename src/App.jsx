@@ -20,6 +20,7 @@ import Admin from './pages/Admin'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import ContactSupport from './pages/ContactSupport'
 import CubeGame from './pages/CubeGame'
+import MindBeatBattle from './pages/MindBeatBattle'
 import PublicHome from './pages/PublicHome'
 
 const SEO_PAGES = {
@@ -30,6 +31,10 @@ const SEO_PAGES = {
   '/games/the-cube': {
     title: '3D Cube Puzzle Game — MindBeat',
     description: 'Play MindBeat’s 3D cube puzzle: rotate the cube, solve the scramble, and track your time in this browser-based casual game.',
+  },
+  '/games/mindbeat-battle': {
+    title: 'MindBeat Battle — Free 3D Browser Game',
+    description: 'Play MindBeat Battle, a free 3D browser action game. Collect stars, avoid arena chasers, use power-ups, and take on the boss across five levels.',
   },
   '/privacy-policy': {
     title: 'Privacy Policy — MindBeat',
@@ -112,6 +117,7 @@ export default function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact-support" element={<ContactSupport />} />
           <Route path="/games/the-cube" element={<CubeGame />} />
+          <Route path="/games/mindbeat-battle" element={<MindBeatBattle />} />
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<Login />} />
         </Routes>
@@ -149,6 +155,7 @@ export default function App() {
         <Route path="/challenge/:challengeId" element={<ChallengePlay />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/games/the-cube" element={<CubeGame />} />
+        <Route path="/games/mindbeat-battle" element={<MindBeatBattle />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       {!hideNav && <BottomNav />}
