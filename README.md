@@ -164,21 +164,6 @@ storage and checked server-side, but browser storage can be cleared or copied;
 this is a risk signal, not a hardware-bound identity. App Check and later
 server-authoritative reward operations are required before enabling earnings.
 
-### Phase 2: Wallet and quiz rewards
-
-The Profile page shows available, locked, and total reward points, an estimated
-PKR value, daily check-in, and the latest wallet ledger entries. A check-in is
-limited to once per 24 hours using the server-stored timestamp and earns the
-configured amount. Quiz reward attempts use five questions selected by the
-server from published Firestore questions; at least the configured accuracy
-threshold must be met, and a user can receive one quiz reward per category per
-UTC day. Attempts expire after the configured duration. Existing quiz XP is
-still awarded through its existing path and is not counted as wallet points.
-
-Reward amounts, conversion, quiz accuracy threshold, and attempt expiry are
-centralized in `shared/rewardsConfig.json`. Deploy the Firestore rules and
-Functions before expecting check-in or quiz wallet rewards to work.
-
 ## Making changes / adding features later
 - **Add more questions:** just use the `/admin` page — no code needed.
 - **Change colors/branding:** edit `tailwind.config.js` (the `violet`, `sun`, `mint`, `coral` values) and `index.css`.

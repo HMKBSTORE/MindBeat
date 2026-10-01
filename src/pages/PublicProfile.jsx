@@ -41,7 +41,7 @@ export default function PublicProfile() {
       </div>
 
       <div className="grid grid-cols-3 gap-2 mb-6">
-        <Stat label="XP" value={student.points} />
+        <Stat label="Points" value={student.points} />
         <Stat label="Streak" value={`🔥${student.streak}`} />
         <Stat label="Best" value={student.longestStreak || 0} />
       </div>

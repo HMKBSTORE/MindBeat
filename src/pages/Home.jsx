@@ -42,7 +42,7 @@ export default function Home({ deferredInstallPrompt, clearDeferredInstallPrompt
           <Zap className="text-violet" size={22} />
           <div>
             <p className="font-extrabold text-lg leading-none">{profile.points}</p>
-            <p className="text-xs text-ink/50 font-medium">Total XP</p>
+            <p className="text-xs text-ink/50 font-medium">Total Points</p>
           </div>
         </div>
         <div className="card flex items-center gap-3">

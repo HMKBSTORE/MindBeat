@@ -10,8 +10,8 @@ import {
   browserLocalPersistence
 } from 'firebase/auth'
 import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore'
-import { auth, db } from '../firebase'
-import { callRewardFunction } from '../utils/rewardClient'
+import { httpsCallable } from 'firebase/functions'
+import { auth, db, functions } from '../firebase'
 
 const AuthContext = createContext(null)
 
@@ -41,13 +41,6 @@ export function AuthProvider({ children }) {
               .then((result) => {
                 if (currentVersion === authChangeVersion) {
                   setRewardEligibility(result.eligible ? 'eligible' : 'restricted')
-                  if (result.eligible) {
-                    setProfile((current) => current ? {
-                      ...current,
-                      walletPoints: result.walletPoints,
-                      lockedPoints: result.lockedPoints,
-                    } : current)
-                  }
                 }
               })
               .catch((error) => {
@@ -120,7 +113,25 @@ export function AuthProvider({ children }) {
 }
 
 async function registerRewardDevice() {
-  return callRewardFunction('initializeRewardAccount')
+  const deviceRegistrationId = getDeviceRegistrationId()
+  if (!deviceRegistrationId) throw new Error('Browser storage is unavailable for device registration.')
+
+  const initializeRewardAccount = httpsCallable(functions, 'initializeRewardAccount')
+  const response = await initializeRewardAccount({ deviceRegistrationId })
+  return response.data
+}
+
+function getDeviceRegistrationId() {
+  const key = 'mindbeat:reward-device-id'
+  try {
+    const existing = localStorage.getItem(key)
+    if (existing) return existing
+    const generated = crypto.randomUUID()
+    localStorage.setItem(key, generated)
+    return generated
+  } catch {
+    return null
+  }
 }
 
 async function ensureStudentProfile(firebaseUser) {

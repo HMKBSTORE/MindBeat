@@ -61,9 +61,6 @@ service cloud.firestore {
     match /registered_devices/{deviceId} {
       allow read, write: if false;
     }
-    match /quiz_reward_attempts/{attemptId} {
-      allow read, write: if false;
-    }
     match /device_risk_events/{eventId} {
       allow read, write: if false;
     }

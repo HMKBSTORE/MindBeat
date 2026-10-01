@@ -3,7 +3,6 @@ import { LogOut, Swords } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import { BADGES } from '../utils/gamification'
 import StaticBannerAd from '../components/StaticBannerAd'
-import WalletPanel from '../components/WalletPanel'
 
 export default function Profile() {
   const { profile, logout } = useAuth()
@@ -19,12 +18,10 @@ export default function Profile() {
       </div>
 
       <div className="grid grid-cols-3 gap-2 mb-6">
-        <Stat label="XP" value={profile.points} />
+        <Stat label="Points" value={profile.points} />
         <Stat label="Streak" value={`🔥${profile.streak}`} />
         <Stat label="Best" value={profile.longestStreak || 0} />
       </div>
-
-      <WalletPanel />
 
       <button onClick={() => navigate('/challenge')} className="btn-primary w-full mb-6 flex items-center justify-center gap-2">
         <Swords size={20} /> Challenge a Friend
